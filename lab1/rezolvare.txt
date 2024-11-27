@@ -1,0 +1,14 @@
+### EX 1
+ls -c /home/daniela/so-labs
+
+
+### EX 2 
+help cd
+
+
+### EX 3
+ls a*.*.
+
+
+### EX 4
+chmod -u rwx -g r -o

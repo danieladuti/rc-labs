@@ -1,0 +1,3 @@
+ex1
+
+scrieti un program in care tatal testeaza daca procesul fiu are un PID par. daca da atunci ii scrie fiului mesajul "fortune", mesaj care va fi afisat de fiu. daca PID-ul este impar tatal va scrie mesajul "lost" si moare inaintea fiului.

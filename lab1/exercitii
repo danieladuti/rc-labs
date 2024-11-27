@@ -1,0 +1,16 @@
+COMENZI BASH
+
+1. sa se afiseze continutul directorului curent in ordine dupa data modificarii.
+2. cum obtineti info despre comanda cd?
+3. afisati toate fisierele din directorul curent de forma a*.*.
+4. dati drepturi asupra unui director ales care sa asigure user=rwx ; group = r ; others = nimic. folositi notatia in octal si apoi pe cea simbolica
+5. folosind stat, grep, cut afisati inodul unui fisier
+6. ce va afisa linia echo 'who|cut -c1 -9|sort|uniq'>>y?
+7. sa se afiseze toti utilizatorii care au numele conturilor terminate in a.
+8. sa se gaseasca toate fisierele din sistem care au extensia .c
+
+
+
+LUCRUL CU FISERE SI DIRECTOARE
+
+9. scrieti un program C care listeaza toate fisierele dintr-un director.

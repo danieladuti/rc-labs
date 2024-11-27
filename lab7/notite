@@ -1,0 +1,4 @@
+
+notite lab 7
+inchidem in server descriptotul nou creat ca sa nu se blocheze(intra in bucla continua)
+in copil inchidem descriptotul ca sa poata accepta conectarea si la alti clienti

@@ -1,0 +1,1 @@
+Implementati un server TCP concurent care sa permita descarcarea unui fisier in paralel de catre mai multi clienti.

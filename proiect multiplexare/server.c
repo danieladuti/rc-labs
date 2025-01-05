@@ -7,7 +7,7 @@ modificari :
  daca vrei sa te conectezo de mai multe ori
 - verifica numele restaurantelor in fisierul txt: restaurante.txt
 - am introdus comenzile inserare si stergere(nu ruleaza nimic pt ca trebuie implementate functionalizatile URGENT)
-- am modificat la modificare sa aiba numai modificare : <denumire_produs> <atribut_produs>, fara clasa
+- am modificat la modificare sa aiba numai modificare : <denumire_produs> <atribut_produs(ingrediente/pret)>, fara clasa
 pt facilitarea cautarii produselor dupa nume
 
 imbunatatiri ulterioare:
@@ -40,7 +40,7 @@ int conectat[100]; // verificam daca clientul este connectat sau nu
 char msg[dim];     // mesajul de la client
 
 /* portul folosit */
-#define PORT 2795
+#define PORT 2793
 
 extern int errno; /* eroarea returnata de unele apeluri */
 
@@ -255,17 +255,17 @@ int verif_ins(char *msg, int fd, int bytes) // verificam daca au fost introduse 
   }
 }
 
-char nume_produs[dim] = "";
 int inserare(char *msg, int fd, int bytes)
 {
   char raspuns[dim];
+  char nume_produs[dim] = "";
   char ingrediente[dim] = "";
   char pret[dim] = "";
   int i, j, k;
 
-  for (i = 8; msg[i] != ' '; i++)
+  for (i = 11; msg[i] != ' '; i++)
   {
-    nume_produs[i - 8] = msg[i]; // inserare : --> 8
+    nume_produs[i - 11] = msg[i]; // "inserare : "--> 11
     j = i;
   }
   j = j + 2;
@@ -292,34 +292,42 @@ int inserare(char *msg, int fd, int bytes)
   //-------------------------------------------------------------------------------------------
   //-------------------------------------------------------------------------------------------
   //-------------------------------------------------------------------------------------------
+  /*
+    if (verif_nume_produs(nume_produs) == 1) // exista deja produsul cu numele acesta URGENT
+    {
+      printf("[s-ins]produsul %s exista deja! nu-l poti insera din nou!");
+      bzero(raspuns, dim);
+      strcat(raspuns, "produsul ");
+      strcat(raspuns, nume_produs);
+      strcat(raspuns, " exista deja! nu-l poti insera din nou!");
+    }
+    else // produsul nu exista in meniu
+    {
+      if (insereaza_produs(nume_produs, ingrediente, pret) == 1) // URGENT functie pt inserare produs in meniu
+      {
+        printf("[s-ins]produsul %s a fost adaugat cu succes!", nume_produs);
+        bzero(raspuns, dim);
+        strcat(raspuns, "produsul ");
+        strcat(raspuns, nume_produs);
+        strcat(raspuns, " a fost adaugat cu succes!");
+      }
+      else
+      {
+        printf("[s-ins]eroare la adaugarea produsului %s", nume_produs);
+        bzero(raspuns, dim);
+        strcat(raspuns, "produsul ");
+        strcat(raspuns, nume_produs);
+        strcat(raspuns, " nu s-a adaugat, mai incearca o data!");
+      }
+    }
+    */
 
-  if (verif_nume_produs(nume_produs) == 1) // exista deja produsul cu numele acesta URGENT
-  {
-    printf("[s-ins]produsul %s exista deja! nu-l poti insera din nou!");
-    bzero(raspuns, dim);
-    strcat(raspuns, "produsul ");
-    strcat(raspuns, nume_produs);
-    strcat(raspuns, " exista deja! nu-l poti insera din nou!");
-  }
-  else // produsul nu exista in meniu
-  {
-    if (insereaza_produs(nume_produs, ingrediente, pret) == 1) // URGENT functie pt inserare produs in meniu
-    {
-      printf("[s-ins]produsul %s a fost adaugat cu succes!", nume_produs);
-      bzero(raspuns, dim);
-      strcat(raspuns, "produsul ");
-      strcat(raspuns, nume_produs);
-      strcat(raspuns, "a fost adaugat cu succes!");
-    }
-    else
-    {
-      printf("[s-ins]eroare la adaugarea produsului %s", nume_produs);
-      bzero(raspuns, dim);
-      strcat(raspuns, "produsul ");
-      strcat(raspuns, nume_produs);
-      strcat(raspuns, "nu s-a adaugat, mai incearca o data!");
-    }
-  }
+  // lasam asa sa vedem daca ruleaza.. URGENT
+  printf("[s-ins]produsul %s a fost adaugat cu succes!\n", nume_produs);
+  bzero(raspuns, dim);
+  strcat(raspuns, "produsul ");
+  strcat(raspuns, nume_produs);
+  strcat(raspuns, " a fost adaugat cu succes!");
 
   printf("[s-ins]trimitem mesajul inapoi..%s\n", raspuns);
 
@@ -366,7 +374,7 @@ int modificare(char *msg, int fd, int bytes)
   char raspuns[dim];
   char produs[dim] = "";
   char atribut[dim] = "";
-  int i, j, k;
+  int i, j;
 
   for (i = 13; msg[i] != ' '; i++)
   {
@@ -374,10 +382,9 @@ int modificare(char *msg, int fd, int bytes)
     j = i;
   }
   j = j + 2;
-  for (i = j; msg[i] != ' '; i++)
+  for (i = j; msg[i] != '\0'; i++)
   {
     atribut[i - j] = msg[i];
-    k = i;
   }
   printf("[s-modif]produs..%s\n", produs);
   printf("[s-modif]atribut..%s\n", atribut);
@@ -475,9 +482,9 @@ int stergere(char *msg, int fd, int bytes)
   char produs[dim] = "";
   int i;
 
-  for (i = 8; msg[i] != '\0'; i++)
+  for (i = 11; msg[i] != '\0'; i++)
   {
-    produs[i - 8] = msg[i]; // stergere : --> 8
+    produs[i - 11] = msg[i]; // "stergere : "--> 11
   }
 
   printf("[s-sterg]produs..%s\n", produs);
@@ -491,7 +498,7 @@ int stergere(char *msg, int fd, int bytes)
   //-------------------------------------------------------------------------------------------
   //-------------------------------------------------------------------------------------------
   //-------------------------------------------------------------------------------------------
-
+  /*
   if (verif_nume_produs(produs) == 1) // exista deja produsul cu numele acesta -- vezi functia pt username URGENT
   {
     printf("[s-sterg]produsul %s exista!", produs);
@@ -501,7 +508,7 @@ int stergere(char *msg, int fd, int bytes)
       bzero(raspuns, dim);
       strcat(raspuns, "produsul ");
       strcat(raspuns, produs);
-      strcat(raspuns, "a fost sters cu succes!");
+      strcat(raspuns, " a fost sters cu succes!");
     }
     else // eroare la stergere
     {
@@ -509,7 +516,7 @@ int stergere(char *msg, int fd, int bytes)
       bzero(raspuns, dim);
       strcat(raspuns, "produsul ");
       strcat(raspuns, produs);
-      strcat(raspuns, "nu s-a sters, mai incearca o data!");
+      strcat(raspuns, " nu s-a sters, mai incearca o data!");
     }
   }
   else // produsul nu exista in meniu
@@ -518,8 +525,15 @@ int stergere(char *msg, int fd, int bytes)
     bzero(raspuns, dim);
     strcat(raspuns, "produsul ");
     strcat(raspuns, produs);
-    strcat(raspuns, "NU exista! deci nu ai cum sa-l stergi");
+    strcat(raspuns, " NU exista! deci nu ai cum sa-l stergi");
   }
+  */
+
+  printf("[s-sterg]produsul %s a fost sters cu succes!\n", produs);
+  bzero(raspuns, dim);
+  strcat(raspuns, "produsul ");
+  strcat(raspuns, produs);
+  strcat(raspuns, " a fost sters cu succes!");
 
   printf("[s-sterg]trimitem mesajul inapoi..%s\n", raspuns);
 
@@ -638,14 +652,14 @@ int eroare_sintactica(char *msg, int fd, int bytes)
   if (strncmp(msg, "inserare", 8) == 0 && ins == 1 && conectat[fd] == 1)
   {
     on = 1;
-    printf("[s-instr-ins]sintaxa comenzii este: \"inserare : <denumire_produs> <ingrediente> <pret>\"\n");
-    strcat(raspuns, "sintaxa comenzii este: \"inserare : <denumire_produs> <ingrediente> <pret>\"");
+    printf("[s-instr-ins]sintaxa comenzii este: \"inserare : <denumire_produs> <ingredient_1,ingredient_2> <pret>\"\n");
+    strcat(raspuns, "sintaxa comenzii este: \"inserare : <denumire_produs> <ingredient_1,ingredient_2> <pret>\"");
   }
 
-  if (strncmp(msg, "inserare", 8) == 0 && ins ==1 /*&& verif_nume_produs(nume_produs) == 1*/ && conectat[fd] == 1) // isspace !=0 caracter alfabetic
-  {//URGENT vezi daca e ok cu verificarea numelui aici. de unde imi dau seama ca exista deja numele asta sau nu? trebuie sa mai verific aici? -- nu cred ca deja verifica in functia mare si zice daca exista deja produsul sau nu
+  if (strncmp(msg, "inserare", 8) == 0 && ins == 1 /*&& verif_nume_produs(nume_produs) == 1*/ && conectat[fd] == 1) // isspace !=0 caracter alfabetic
+  {                                                                                                                 // URGENT vezi daca e ok cu verificarea numelui aici. de unde imi dau seama ca exista deja numele asta sau nu? trebuie sa mai verific aici? -- nu cred ca deja verifica in functia mare si zice daca exista deja produsul sau nu
     on = 1;
-    printf("[s-instr-conn2]ai inserat deja acest produs!\n");
+    printf("[s-instr-ins2]ai inserat deja acest produs!\n");
     strcat(raspuns, "ai inserat deja acest produs!");
   }
 
@@ -654,8 +668,8 @@ int eroare_sintactica(char *msg, int fd, int bytes)
   if (strncmp(msg, "modificare", 10) == 0 && modif == 1 && conectat[fd] == 1)
   {
     on = 1;
-    printf("[s-instr-modif]sintaxa comenzii este: \"modificare : <categorie> <denumire_produs> <atribut_produs>\"\n");
-    strcat(raspuns, "sintaxa comenzii este: \"modificare : <categorie> <denumire_produs> <atribut_produs>\"");
+    printf("[s-instr-modif]sintaxa comenzii este: \"modificare : <categorie> <denumire_produs> <atribut_produs(ingrediente/pret)>\"\n");
+    strcat(raspuns, "sintaxa comenzii este: \"modificare : <categorie> <denumire_produs> <atribut_produs(ingrediente/pret)>\"");
   }
 
   //-----------------------------STERGERE-----------
@@ -851,7 +865,7 @@ int main()
                 else
                   printf("[server]eroare la inserare\n");
               }
-            }//        MODIFICARE
+            } //        MODIFICARE
             else if (strncmp(msg, "modificare : ", 13) == 0) //"modificare : "--> 13
             {
               if (verif_modificare(msg, fd, bytes) == 0) // daca da 1 inseamna ca clientul nu a introdus destule argumente pt comanda modificare.
@@ -861,7 +875,7 @@ int main()
                 else
                   printf("[server]eroare la modificare\n");
               }
-            }//        stergere
+            } //        stergere
             else if (strncmp(msg, "stergere : ", 11) == 0) //"stergere : "--> 11
             {
               if (verif_sterg(msg, fd, bytes) == 0) // daca da 1 inseamna ca clientul nu a introdus destule argumente pt comanda stergere.

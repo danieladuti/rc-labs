@@ -63,8 +63,8 @@ int main(int argc, char *argv[])
          /*1.*/ "conectare : <username>\n"
          /*2.*/ "afisare\n"
          /*3.*/ "export\n"
-         /*4.*/ "inserare : <denumire_produs> <ingrediente> <pret>\n"
-         /*5.*/ "modificare : <denumire_produs> <atribut_produs>\n"
+         /*4.*/ "inserare : <denumire_produs> <ingredient_1,ingredient_2> <pret>\n"
+         /*5.*/ "modificare : <denumire_produs> <atribut_produs(ingrediente/pret)>\n"
          /*6.*/ "stergere : <denumire_produs>\n"
          /*7.*/ "deconectare\n");
 
